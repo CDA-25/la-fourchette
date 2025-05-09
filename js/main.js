@@ -43,8 +43,7 @@ function play(jeu) { // on déclare une function pour jouer : on veut utiliser l
         play(jeu)
     } else {
         let message = "Scores des parties : \n"
-        scores.forEach((value, index) => message += "Partie n° " + index + " : " + value + " essai(s). \n"
-        )
+        scores.forEach((value, index) => { message += `Partie n°${index + 1} : ${value} essai(s). \n` });
         alert(message)
     }
 }
