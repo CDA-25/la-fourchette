@@ -1,4 +1,3 @@
-// Le nombre max
 let max = 10;
 
 const game = {
@@ -6,8 +5,10 @@ const game = {
 
   attemps: 1,
 
+  // Historique des tentatives (fait avec copilot)
   attemptsHistory: [],
 
+  // Tableau des scores (fait avec copilot)
   scores: [],
 };
 
@@ -44,7 +45,6 @@ function play(object) {
     object.attemps = 1;
     object.attemptsHistory = [];
     play(object);
-  } else {
     displayScores(object.scores);
   }
 }
