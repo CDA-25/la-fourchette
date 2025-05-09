@@ -1,14 +1,17 @@
 // Le nombre max
-var max = 500; 
+let max = 500;
 
-// Le nombre cherché
-var searchedNumber = Math.round(Math.random() * max);
+// je déclare mon objet Game :
+let game = {
+    // Le nombre cherché
+    searchedNumber: Math.round(Math.random() * max),
+    // Le nombre d'essais
+    attemps: 1
+}
 
 // Le nombre saisi
-var enteredNumber = parseInt(prompt('Quel est le nombre à trouver ?'));
+let enteredNumber = parseInt(prompt('Quel est le nombre à trouver ?'));
 
-// Le nombre d'essais
-var attemps = 1;
 
 // Tant que le nombre saisi n'est pas bon on redemande un nombre
 while (enteredNumber !== searchedNumber) {
@@ -26,3 +29,4 @@ while (enteredNumber !== searchedNumber) {
 // on est sorti de la boucle, c'est que le nombre saisi est bien le nombre cherché
 // on affiche un message de victoire
 alert('Bravo ! C\'était bien ' + searchedNumber + ' - Nombre d\'essais : ' + attemps);
+
