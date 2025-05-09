@@ -1,9 +1,9 @@
 //Etape 1 cree un object avec les parametres du jeu
 const game = {
-    min : 1,
-    max: 500,
+    min : 10,
+    max: 13,
     searchedNumber: null,
-    attempts: 0,
+    attempts: 1,
     scores: []
 };
 //Etape 2 cree une fonction pour generez un nombre aleatoire
@@ -18,7 +18,7 @@ function getRandomNumber(min, max) {
 function play() {
     // On initialise le jeu
     game.searchedNumber = getRandomNumber(game.min, game.max);
-    game.attempts = 0;
+    game.attempts = 1;
 
     // on va demander aux joueurs de nous donner un nombre
     let entredNumber = parseInt(prompt(`Quel est le nombre à trouver entre ${game.min} et ${game.max} ?`));
