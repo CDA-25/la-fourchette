@@ -33,8 +33,7 @@ function play(game) {
     }
     score.push(game.essais)
     alert('Bravo ! C\'était bien ' + game.nombreRecherche + ' - Nombre d\'essais : ' + game.essais);
-    let ilVeut = prompt("Voulez-vous rejouez une partie ?")
-    if (ilVeut == "oui" || ilVeut == "yes" || ilVeut == "Oui" || ilVeut == "Yes") {
+    if (confirm("Voulez-vous rejouez une partie ?")) {
         play(game)
     } else
     score.forEach((essai, index) => {console.log(('Partie ' + (index + 1) + ' : ' + essai + ' essais'))})
