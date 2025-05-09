@@ -54,5 +54,5 @@ function play() {
 }
 
 // maintenant on va enfin lancer notre fonction pour jouer
-
+play();
 //Remerciement a google pour m'avoir aider a trouver la solution XD
