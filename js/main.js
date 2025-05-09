@@ -1,28 +1,43 @@
-// Le nombre max
-var max = 500; 
+let score = []
 
-// Le nombre cherché
-var searchedNumber = Math.round(Math.random() * max);
-
-// Le nombre saisi
-var enteredNumber = parseInt(prompt('Quel est le nombre à trouver ?'));
-
-// Le nombre d'essais
-var attemps = 1;
-
-// Tant que le nombre saisi n'est pas bon on redemande un nombre
-while (enteredNumber !== searchedNumber) {
-    // on précise si le nombre recherché est inférieur ou supérieur au nombre saisi
-    if (enteredNumber < searchedNumber) {
-        enteredNumber = parseInt(prompt('C\'est plus'));
-    }
-    else {
-        enteredNumber = parseInt(prompt('C\'est moins'));
-    }
-    // on incrémente le nombre d'essais
-    attemps += 1;
+const game = {
+    nombreMin : 10,
+    nombreMax : 20,
+    nombreEntre : 0,
+    essais : 1
 }
 
-// on est sorti de la boucle, c'est que le nombre saisi est bien le nombre cherché
-// on affiche un message de victoire
-alert('Bravo ! C\'était bien ' + searchedNumber + ' - Nombre d\'essais : ' + attemps);
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function reset() {
+    game.essais = 1
+    game.nombreRecherche = randomNumber(game.nombreMin, game.nombreMax)
+    game.nombreEntre = parseInt(prompt('Quel est le nombre à trouver ?'));
+}
+
+function play(game) {
+    reset()
+    // Tant que le nombre saisi n'est pas bon on redemande un nombre
+    while (game.nombreEntre !== game.nombreRecherche) {
+        // on précise si le nombre recherché est inférieur ou supérieur au nombre saisi
+        if (game.nombreEntre < game.nombreRecherche) {
+            game.nombreEntre = parseInt(prompt('C\'est plus'));
+        }
+        else {
+            game.nombreEntre = parseInt(prompt('C\'est moins'));
+        }
+        // on incrémente le nombre d'essais
+        game.essais += 1;
+    }
+    score.push(game.essais)
+    alert('Bravo ! C\'était bien ' + game.nombreRecherche + ' - Nombre d\'essais : ' + game.essais);
+    let ilVeut = prompt("Voulez-vous rejouez une partie ?")
+    if (ilVeut == "oui" || ilVeut == "yes" || ilVeut == "Oui" || ilVeut == "Yes") {
+        play(game)
+    } else
+    score.forEach((essai, index) => {console.log(('Partie ' + (index + 1) + ' : ' + essai + ' essais'))})
+}
+
+play(game)
