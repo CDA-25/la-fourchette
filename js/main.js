@@ -7,8 +7,11 @@ const game = {
   // Le nombre d'essais
   attemps: 1,
 
-  // Historique des tentatives(fait avec copilot)
+  // Historique des tentatives (copilot)
   attemptsHistory: [],
+
+  // Tableau des scores (copilot)
+  scores: [],
 };
 
 function play(object) {
@@ -31,6 +34,9 @@ function play(object) {
   // On enregistre la tentative correcte dans l'historique
   object.attemptsHistory.push(enteredNumber);
 
+  // On ajoute le score au tableau des scores
+  object.scores.push(object.attemps);
+
   // on est sorti de la boucle, c'est que le nombre saisi est bien le nombre cherché
   // on affiche un message de victoire
   alert(
@@ -38,17 +44,28 @@ function play(object) {
       object.searchedNumber +
       " - Nombre d'essais : " +
       object.attemps +
-      //fait avec copilot
       "\nHistorique des tentatives : " +
       object.attemptsHistory.join(", ")
   );
-}
-play(game);
 
-function aléatoire(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  // Demander si l'utilisateur veut rejouer
+  if (confirm("Hey, tu veux rejouer mon gars ?")) {
+    // Réinitialiser les propriétés nécessaires pour une nouvelle partie
+    object.searchedNumber = Math.round(Math.random() * max);
+    object.attemps = 1;
+    object.attemptsHistory = [];
+    play(object);
+  } else {
+    // Afficher les scores si l'utilisateur ne veut pas rejouer
+    displayScores(object.scores);
+  }
 }
-alert(aléatoire(10, 20));
 
-confirm("Hey tu veux refaire une partie mon gars ?");
+function displayScores(scores) {
+  let message = "Scores de la parties :\n";
+  scores.forEach((score, index) => {
+    message += `Partie ${index + 1} : ${score} essais\n`;
+  });
+  alert(message);
+}
 play(game);
