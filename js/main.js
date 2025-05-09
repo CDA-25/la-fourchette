@@ -36,6 +36,7 @@ function play(game) {
     if (confirm("Voulez-vous rejouez une partie ?")) {
         play(game)
     } else
+    alert("Le jeu est fini ! Vous pouvez consulter vos scores dans la console !")
     score.forEach((essai, index) => {console.log(('Partie ' + (index + 1) + ' : ' + essai + ' essais'))})
 }
 
