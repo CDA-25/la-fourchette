@@ -39,7 +39,14 @@ function play(jeu) { // on déclare une function pour jouer : on veut utiliser l
     alert('Bravo ! C\'était bien ' + jeu.searchedNumber + ' - Nombre d\'essais : ' + jeu.attemps);
     scores.push(jeu.attemps);
 
-    if (confirm("Voulez vous rejouez ?")) { play(jeu) }
+    if (confirm("Voulez vous rejouez ?")) {
+        play(jeu)
+    } else {
+        let message = "Scores des parties : \n"
+        scores.forEach((value, index) => message += "Partie n° " + index + " : " + value + " essai(s). \n"
+        )
+        alert(message)
+    }
 }
 // on est sorti de la boucle, c'est que le nombre saisi est bien le nombre cherché
 // on affiche un message de victoire
