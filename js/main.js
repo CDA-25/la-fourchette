@@ -1,11 +1,12 @@
+let min = 1
+let max = 10
 let attemps = 1
+let countFinishedGames = 0
 let playerInput = parseInt(prompt('Quel est le nombre à trouver ?'))
-let history = [] //stocke l'historique des tentatives de la partie en cours
-let games = [] //stocke les différentes parties
-let countGames = 0 //stocke le nombre de victoires (parties effectuées) TODO : lier ça avec games[]
+let history = []
+let games = []
 
-
-function randomNumber(min, max) //génère un nombre random avec un min/max en input de la fonction
+function nombreMystere(min, max)
 {
     return Math.round(min + (Math.random() * (max-min)))
 }
@@ -14,84 +15,99 @@ function askReplay()
 {
     if (confirm("Voulez-vous refaire une partie ?"))
         {
-            game(playerInput, randomNumber(10,20))
+            attemps = 1
+            gameStart(playerInput, nombreMystere(min, max))
         }
         else
-        {
-            
+        {   
             alert("Merci d'avoir joué !")
-            for (let j = 0; j < games.length; j++)
-            {
-                console.log(games[j]) // Affiche le résultat de la partie en cours
-            }
-            games.push(attemps)
+            console.log("Historique des parties jouées :")
+            games.forEach((partie, index) => {
+                console.log("- - - - - Partie n°" + index + " - - - - -")
+                partie.forEach((value) => {
+                    console.log("tentative n°" + value.tentative + ": " + value.resultat)
+                })
+            })
         }
 }
 
-
-function game(input, number)
+function displayGameCurrentResults(attemps)
 {
-    attemps = 1
-    history = []
-
-    while (input != number)
-    {
-        if (input < number)
-        {
-            input = parseInt(prompt("C'est plus"))
-        }
-
-        else
-        {
-            input = parseInt(prompt("C'est moins"))
-        }
-
-        attemps++
-        history.push(input)
-    }
-
-    countGames ++ //partie terminée, on incrémente le nombre de parties jouées
-
     if (attemps == 1)
-    {
-        alert("Vous êtes trop fort ! Vous avez trouvé le nombre mystère en un coup !!")
-        return;
-    }
-    if (attemps < 10)
-    {
-        alert("Vous avez trouvé le nombre mystère en moins de 10 coups. Pas mal ! " + attemps + "essais")
-        return;
-    }
+        {
+            alert("Vous êtes trop fort ! Vous avez trouvé le nombre mystère en un coup !!") //le petit flex
+        }
+
     else
     {
-        alert("Vous avez bien trouvé le nombre mystière mais vous êtes vraiment nul..." + attemps + "essais")
-        return;  
-    } 
+        if (attemps < 10)
+            {
+                alert("Vous avez trouvé le nombre mystère en " + attemps + " essais. Pas mal !")
+            }
+
+        else
+            {
+                alert("Vous avez trouvé le nombre mystère en " + attemps + " essais. Vous pouvez faire mieux que ça !") 
+            }
+    }
+
+    //J'enlève ce bout de code, car techniquement le résumé de chaque partie est déjà affiché lorsque le joueur arrête le jeu
+    // console.log("Résumé de la partie :")
+    // for (let i = 0; i < history.length; i++)
+    // {
+    //     console.log("Tentative n°" + (i+1) + " : " + history[i])
+    // }
 }
 
 
-
-game(playerInput, randomNumber(10,20))
-
-games.push(attemps) //ajoute le résultat de la partie en cours (nombre de tentatives)
-
-
-askReplay() //fonction qui demande au joueur s'il veut rejouer ou non
-
-
-for (let i = 0; i < history.length; i++) //le poti for
+function gameWin()
 {
-    console.log("Tentative n°", i+1, ":", history[i] ) //Affiche les tentatives de la partie en cours
+    countFinishedGames++
+    playerInput = 0 // On réinitialise la valeur de playerInput (bug : si le nombre mystère est le même entre deux parties qui se suivent, ça comptabilise direct en victoire)
+    games[countFinishedGames] = [] //On initialise le tableau qui va stocker les résultats de la partie qui vient de se terminer
+
+    for (let k = 0; k < history.length; k++)
+    {
+        // console.log("tentative " + k+1 + " de la partie n° " + (games.length +1) + " : " + history[k]) //pour m'aider à build le tableau, et les foreach plus haut
+        games[countFinishedGames].push
+        ({ 
+            tentative:((k+1)), 
+            resultat:history[k]
+        })
+    }
+    
+
+    displayGameCurrentResults(attemps) //affiche le résulat de la partie en cours
+    askReplay() //demande si le joueur veut jouer à nouveau
 }
 
-//      BUGS
-// ne redemande pas la confirmation de rejouer au bout de la 2eme partie
-// du coup la gestion du score de la seconde partie est cassé (games[]) , (fusionné avec celui de la première)
-// pas d'historique
-// il semble que le while s'active 
+function gameStart(input, number)
+{
+    attemps = 1 //réinitialisation du compteur d'essais
+    history = [] //on réinitialise l'historique des tentatives, pour chaque début de partie
+    
+    if (!isNaN(input)) //petit fix car le premier nombre deviné n'était jamais inséré dans le tableau history
+    {
+        history.push(input)
+    }
+      
+    while (input != number)
+    {     
+        if (input < number)
+        {
+                input = parseInt(prompt("C'est plus"))
+        }
+        else
+        {
+                input = parseInt(prompt("C'est moins"))
+        }
+        if (!isNaN(input))
+        {
+            attemps++
+            history.push(input)
+        }   
+    }
+    gameWin()    
+}
 
-
-//      TODO
-//enregistrer tous les paramètres dans un objet
-
-//JavaScriptM'aTuer
+gameStart(playerInput, nombreMystere(min, max))
