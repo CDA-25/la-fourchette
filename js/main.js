@@ -1,26 +1,37 @@
-let min = 1
-let max = 10
-let attemps = 1
-let countFinishedGames = 0
-let playerInput = parseInt(prompt('Quel est le nombre à trouver ?'))
+const config = 
+    {
+        min: 1, 
+        max: 10, 
+        promptPlayerInput: "Quel est le nombre à trouver ?",
+        promptIsLess: "C'est moins",
+        promptIsMore: "C'est plus",
+        alertAskNewGame: "Voulez-vous refaire une partie ?",
+        alertThank: "Merci d'avoir joué !",
+        alertScore1: "Vous avez trouvé le nombre mystère en un seul coup ! Trop fort !",
+        alertScore2: "Vous avez trouvé le nombre mystère en moins de 10 coups. Pas mal !",
+        alertScore3: "Vous avez trouvé le nombre mystère en plus de 10 coups. Vous ferez mieux la prochaine fois."
+    }
+
+let attempts = 0
 let history = []
 let games = []
+let countFinishedGames = 0
 
-function nombreMystere(min, max)
+function mysteryNumber(min, max)
 {
     return Math.round(min + (Math.random() * (max-min)))
 }
 
 function askReplay()
 {
-    if (confirm("Voulez-vous refaire une partie ?"))
+    if (confirm(config.alertAskNewGame))
         {
-            attemps = 1
-            gameStart(playerInput, nombreMystere(min, max))
+            attempts = 1
+            gameStart(parseInt(prompt(config.promptPlayerInput)), mysteryNumber(config.min, config.max))
         }
         else
         {   
-            alert("Merci d'avoir joué !")
+            alert(config.alertThank)
             console.log("Historique des parties jouées :")
             games.forEach((partie, index) => {
                 console.log("- - - - - Partie n°" + index + " - - - - -")
@@ -31,23 +42,23 @@ function askReplay()
         }
 }
 
-function displayGameCurrentResults(attemps)
+function displayGameCurrentResults(attempts)
 {
-    if (attemps == 1)
+    if (attempts == 1)
         {
-            alert("Vous êtes trop fort ! Vous avez trouvé le nombre mystère en un coup !!") //le petit flex
+            alert(config.alertScore1) //le petit flex
         }
 
     else
     {
-        if (attemps < 10)
+        if (attempts < 10)
             {
-                alert("Vous avez trouvé le nombre mystère en " + attemps + " essais. Pas mal !")
+                alert(config.alertScore2 + "(" + attempts + " tentatives)")
             }
 
         else
             {
-                alert("Vous avez trouvé le nombre mystère en " + attemps + " essais. Vous pouvez faire mieux que ça !") 
+                alert(config.alertScore3 + "(" + attempts + " tentatives)")
             }
     }
 
@@ -63,7 +74,6 @@ function displayGameCurrentResults(attemps)
 function gameWin()
 {
     countFinishedGames++
-    playerInput = 0 // On réinitialise la valeur de playerInput (bug : si le nombre mystère est le même entre deux parties qui se suivent, ça comptabilise direct en victoire)
     games[countFinishedGames] = [] //On initialise le tableau qui va stocker les résultats de la partie qui vient de se terminer
 
     for (let k = 0; k < history.length; k++)
@@ -76,14 +86,13 @@ function gameWin()
         })
     }
     
-
-    displayGameCurrentResults(attemps) //affiche le résulat de la partie en cours
+    displayGameCurrentResults(attempts) //affiche le résulat de la partie en cours
     askReplay() //demande si le joueur veut jouer à nouveau
 }
 
 function gameStart(input, number)
 {
-    attemps = 1 //réinitialisation du compteur d'essais
+    attempts = 1 //réinitialisation du compteur d'essais
     history = [] //on réinitialise l'historique des tentatives, pour chaque début de partie
     
     if (!isNaN(input)) //petit fix car le premier nombre deviné n'était jamais inséré dans le tableau history
@@ -95,19 +104,19 @@ function gameStart(input, number)
     {     
         if (input < number)
         {
-                input = parseInt(prompt("C'est plus"))
+                input = parseInt(prompt(config.promptIsMore))
         }
         else
         {
-                input = parseInt(prompt("C'est moins"))
+                input = parseInt(prompt(config.promptIsLess))
         }
         if (!isNaN(input))
         {
-            attemps++
+            attempts++
             history.push(input)
         }   
     }
     gameWin()    
 }
 
-gameStart(playerInput, nombreMystere(min, max))
+gameStart(parseInt(prompt(config.promptPlayerInput)), mysteryNumber(config.min, config.max))
