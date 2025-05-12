@@ -1,28 +1,62 @@
-// Le nombre max
-var max = 500; 
+let max = 10;
 
-// Le nombre cherché
-var searchedNumber = Math.round(Math.random() * max);
+const game = {
+  searchedNumber: Math.round(Math.random() * max),
 
-// Le nombre saisi
-var enteredNumber = parseInt(prompt('Quel est le nombre à trouver ?'));
+  attemps: 1,
 
-// Le nombre d'essais
-var attemps = 1;
+  // Historique des tentatives (fait avec copilot)
+  attemptsHistory: [],
 
-// Tant que le nombre saisi n'est pas bon on redemande un nombre
-while (enteredNumber !== searchedNumber) {
-    // on précise si le nombre recherché est inférieur ou supérieur au nombre saisi
-    if (enteredNumber < searchedNumber) {
-        enteredNumber = parseInt(prompt('C\'est plus'));
+  // Tableau des scores (fait avec copilot)
+  scores: [],
+};
+
+function play(object) {
+  let enteredNumber = parseInt(prompt("Quel est le nombre à trouver ?"));
+
+  while (enteredNumber !== object.searchedNumber) {
+    object.attemptsHistory.push(enteredNumber);
+
+    if (enteredNumber < object.searchedNumber) {
+      enteredNumber = parseInt(prompt("C'est plus"));
+    } else {
+      enteredNumber = parseInt(prompt("C'est moins"));
     }
-    else {
-        enteredNumber = parseInt(prompt('C\'est moins'));
-    }
-    // on incrémente le nombre d'essais
-    attemps += 1;
+
+    object.attemps += 1;
+  }
+
+  object.attemptsHistory.push(enteredNumber);
+
+  object.scores.push(object.attemps);
+
+  alert(
+    "Bravo ! C'était bien " +
+      object.searchedNumber +
+      " - Nombre d'essais : " +
+      object.attemps +
+      "\nHistorique des tentatives : " +
+      object.attemptsHistory.join(", ")
+  );
+
+  if (confirm("Hey, tu veux rejouer mon gars ?")) {
+    object.searchedNumber = Math.round(Math.random() * max);
+    object.attemps = 1;
+    object.attemptsHistory = [];
+    play(object);
+    displayScores(object.scores);
+  }
 }
 
-// on est sorti de la boucle, c'est que le nombre saisi est bien le nombre cherché
-// on affiche un message de victoire
-alert('Bravo ! C\'était bien ' + searchedNumber + ' - Nombre d\'essais : ' + attemps);
+function displayScores(scores) {
+  let message = "Scores de la parties :\n";
+
+  scores.forEach((score, index) => {
+    message += `Partie ${index + 1} : ${score} essais\n`;
+  });
+
+  alert(message);
+}
+
+play(game);
